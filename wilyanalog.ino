@@ -1,5 +1,3 @@
-//#include "application.h"
-
 // name the pins
 #define SOILPIN A0
 
@@ -13,10 +11,11 @@ void setup()
 void loop()
 {
  int analogValue = analogRead(SOILPIN);       // read  sensor
+ //int SoilValue = map((analogValue), 0, 1023, 100, 0);  // convert output to a percent
  Serial.print("Analog Value: ");
  Serial.println(analogValue);
  Particle.publish("Moisture",String (analogValue),60,PRIVATE);
-// Particle.variable("analogvalue", String(analogValue), INT);
+ //Particle.publish("Moisture",String (SoilValue),60,PRIVATE);
  
  delay(5000);
 }
