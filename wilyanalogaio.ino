@@ -9,7 +9,6 @@
 #define AIO_KEY "your key here"          // Adafruit IO AIO Key
 TCPClient client;                                           // TCP Client used by Adafruit IO library
 
-
 // Create the AIO client object
 Adafruit_IO_Client  AIOClient = Adafruit_IO_Client(client, AIO_KEY);
  
@@ -22,10 +21,12 @@ String toggleLED;
 // name the pins
 #define SOILPIN A0
 int led = D7;
+int tled = D6;
 
 void setup() 
 {
     pinMode(led, OUTPUT);
+    pinMode(tled, OUTPUT);
     // Start the Adafruit IO Client
     AIOClient.begin();
     
@@ -58,12 +59,12 @@ void loop()
         
         //turn on LED or not
          if(toggleLED=="1"){
-        digitalWrite(led, HIGH);
+        digitalWrite(tled, HIGH);
         Serial.println("LED On");
                 }
                 
         if(toggleLED=="0"){
-        digitalWrite(led, LOW);
+        digitalWrite(tled, LOW);
         Serial.println("OFF");
                 }
         
@@ -74,7 +75,16 @@ void loop()
         Serial.println("error");
     }
     
+    // Logic area. This is where we use an if statement turn on the LED on the Argon if moisture gets too low
+     if (SoilValue<50){     //can change this to any desired threshold from 1 to 99
+ 
+     digitalWrite(led, HIGH);       //turn LED on
+     }
+     
+     else{
+     digitalWrite(led, LOW);        //turn LED off if moisture is good
+     }
   
     
-    delay(5000);        //time in ms betwee
+    delay(5000);
 }
