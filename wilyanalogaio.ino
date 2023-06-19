@@ -1,13 +1,13 @@
 // This #include statement was automatically added by the Particle IDE.
-// Delete this include and re-add the library in the Particle IDE
 #include <Adafruit_IO_Particle.h>
 
 #include <Wire.h>
 #include <application.h>
 #include "Adafruit_IO_Client.h"
  
-#define AIO_KEY "your key here"          // Adafruit IO AIO Key
+#define AIO_KEY "yourkeyhere"          // Adafruit IO AIO Key
 TCPClient client;                                           // TCP Client used by Adafruit IO library
+
 
 // Create the AIO client object
 Adafruit_IO_Client  AIOClient = Adafruit_IO_Client(client, AIO_KEY);
@@ -23,10 +23,22 @@ String toggleLED;
 int led = D7;
 int tled = D6;
 
+#define enA 2
+#define in1 3
+#define in2 4
+
 void setup() 
 {
     pinMode(led, OUTPUT);
     pinMode(tled, OUTPUT);
+    
+    pinMode(enA, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+ 
+  // Set initial rotation direction
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
     // Start the Adafruit IO Client
     AIOClient.begin();
     
@@ -60,11 +72,17 @@ void loop()
         //turn on LED or not
          if(toggleLED=="1"){
         digitalWrite(tled, HIGH);
+        analogWrite(enA, 200); // Send PWM signal to L298N Enable pin
+
         Serial.println("LED On");
+        delay (5000);
+        analogWrite(enA, 00);
+        
                 }
                 
         if(toggleLED=="0"){
         digitalWrite(tled, LOW);
+        analogWrite(enA, 00);
         Serial.println("OFF");
                 }
         
